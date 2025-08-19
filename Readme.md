@@ -8,7 +8,7 @@ To be able to use the functions, just do
 
 ``` #include "hashtable.c"```
 
-At the top of your file. Don't mess up the path.
+At the top of your file. Don't mess up the path. You do not need any files other than ```hashtable.c```.
 
 
 ## How do I run the example
