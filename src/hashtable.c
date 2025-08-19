@@ -5,8 +5,6 @@
 #include <string.h>
 #include <errno.h>
 
-#define TABLESIZE 10000000
-
 unsigned long hash_djb2(const char *str) {
     unsigned long hash = 5381;
     int c;
@@ -41,7 +39,7 @@ Hashtable* create_hashtable(size_t size) {
 
 int table_add(Hashtable* hashtable, char* key, char* value) {
   unsigned long hash = hash_djb2(key);
-  int dictionary_index = hash % (hashtable->size); // Will always return a value between 0 and size-1 inclusive
+  size_t dictionary_index = hash % (hashtable->size); // Will always return a value between 0 and size-1 inclusive
 
   Node* tempnode = (hashtable->table)[dictionary_index]; // This is the pointer to the head of the linked list for the given dictionary index
   
@@ -81,7 +79,7 @@ int table_add(Hashtable* hashtable, char* key, char* value) {
 
 int table_remove(Hashtable* hashtable, char* key) {
   unsigned long hash = hash_djb2(key);
-  int dictionary_index = hash % (hashtable->size);
+  size_t dictionary_index = hash % (hashtable->size);
   Node* tempnode = (hashtable->table)[dictionary_index];
 
   if (tempnode == NULL) { errno = ENOENT; return -1; } // It does not exist. Thus, we create problems for the user to handle. Mwahahaha
@@ -126,14 +124,12 @@ int table_remove(Hashtable* hashtable, char* key) {
   free(tempnode->value);
   free(tempnode);
 
-
-
   return 0;
 }
 
 char* table_get(Hashtable* hashtable, char* key) {
   unsigned long hash = hash_djb2(key);
-  int dictionary_index = hash % (hashtable->size);
+  size_t dictionary_index = hash % (hashtable->size);
 
   Node* tempnode = (hashtable->table)[dictionary_index];
 
